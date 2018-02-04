@@ -22,7 +22,15 @@ public interface ISkiResortItemService {
     public boolean addItem(@WebParam(name="user") SkiResortItem item) throws ApiException;
     
  
-    // get Item by id
+    /**
+     *  Get Ski Resort Item by id
+     * @param itemId
+     * @return SkiResortItem
+     * @throws ApiException
+     */
+    @WebMethod(operationName="getSkiResortItem") 
+    @WebResult(name="skiResortItemById") 
+    public SkiResortItem getItemById(@WebParam(name="itemId") String itemId) throws ApiException;
     
     // remove item
     

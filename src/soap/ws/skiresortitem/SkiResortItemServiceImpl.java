@@ -3,6 +3,10 @@ package soap.ws.skiresortitem;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -12,6 +16,8 @@ import javax.jws.WebService;
 
 import com.recombee.api_client.RecombeeClient;
 import com.recombee.api_client.api_requests.AddItemProperty;
+import com.recombee.api_client.api_requests.ListItems;
+import com.recombee.api_client.bindings.Item;
 import com.recombee.api_client.exceptions.ApiException;
 
 import soap.model.SkiResortItem;
@@ -76,12 +82,52 @@ public class SkiResortItemServiceImpl implements ISkiResortItemService{
 //		}
 	}
 	
-	
 	@Override
 	public boolean addItem(SkiResortItem item) throws ApiException {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+	/**
+	 * TODO: parse properly !!!
+	 */
+	@Override
+	public SkiResortItem getItemById(String itemId) throws ApiException {
+		logger.info("getItemById + " + itemId);
+		SkiResortItem item = null;
+		try {
+			List<Item> result = Arrays.asList(client.send(new ListItems()
+					  .setFilter("\"" + itemId + "\" in 'itemId'")
+					  .setReturnProperties(true)));
+			if (result.size() == 0) {
+				logger.info("Item " + itemId + " is not found!");
+				return null;
+			}
+			
+			item = new SkiResortItem();
+			for (Item i: result) {
+				String id = i.getItemId().toString();
+				if (id.equals(itemId)) {
+					Map<String, Object> v = i.getValues();
+					item.setId(Integer.parseInt(v.get("itemId").toString()));
+					item.setName(v.get("name").toString());
+//					item.setLiftCount(Integer.parseInt(v.get("liftCount").toString()));
+					item.setOfficialWebsite(v.get("officialWebsite").toString());
+					
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info(e.getMessage());
+		}
+		return item;
+	}
+	
+	
+	
+	
+	
 	
 	
 
