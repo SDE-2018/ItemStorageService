@@ -189,7 +189,25 @@ public class SkiResortItem implements Serializable{
 	@Override
 	public String toString() {
 		String res = "";
-		res += "<b>" + name + "</b><br/>";
+		res += "<b>" + name + "</b>\n"; // name
+		if ( officialWebsite != null && !officialWebsite.isEmpty()) {
+			res += "<a href=\"" + officialWebsite + "\">" + officialWebsite + "</a>\n";
+		}
+		if (liftCount != 0) {
+			res += "<b>Lift count:</b>" + Integer.toString(liftCount) + "\n";
+		}
+		if (longestRun != 0) {
+			res += "<b>Longest run:</b>" + Integer.toString(longestRun) + " meters\n";
+		}
+		if (top != 0) {
+			res += "<b>Top:</b>" + Integer.toString(top) + "m\n";
+		}
+		if (terrainPark) {
+			res += "<b>Has Terrain Park!</b>\n";
+		} 
+		if (nightSkiing) {
+			res += "<b>Night skiing is available!</b>\n";
+		}
 		res += "<a href=\"" + skiMapUrl + "\">Map</a>";
 		return res;
 	}

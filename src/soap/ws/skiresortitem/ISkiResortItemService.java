@@ -1,5 +1,7 @@
 package soap.ws.skiresortitem;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -30,11 +32,41 @@ public interface ISkiResortItemService {
      */
     @WebMethod(operationName="getSkiResortItem") 
     @WebResult(name="skiResortItemById") 
-    public SkiResortItem getItemById(@WebParam(name="itemId") String itemId) throws ApiException;
+    public SkiResortItem getItemById(@WebParam(name="itemId") String itemId);
     
     // remove item
     
     // update item
+
+    /**
+     * Add a rating for a certain item evaluated by the user to Recombee database.
+     * 
+     * @param userId user evaluated the item
+     * @param itemId id of the item
+     * @param rating rating in integer scale from 1 to 5 (will be transformed to -1.0..+1.0)
+     * @return true if rating was added successfully, false otherwise
+     * @throws ApiException
+     */
+    @WebMethod(operationName="addSkiItemRating") 
+    @WebResult(name="createdRating") 
+    public boolean addSkiItemRatingById(@WebParam(name="userId") String userId,
+			    		@WebParam(name="itemId") String itemId, 
+			    		@WebParam(name="rating") int rating);
+ 
+    
+    /**
+     * Get all items with the rating for a given user.
+     * 
+     * @param userId target user id
+     * @param rating rating of all items should be equal to this 
+     * 			rating that user have askedfor
+     * @return items with rating equal to the given
+     */
+    public List<SkiResortItem> getEvaluatedItemsWithRating(
+    						@WebParam(name="userId") String userId,
+				    		@WebParam(name="rating") int rating);
+    
+    
 }
 
 
