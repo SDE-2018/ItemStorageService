@@ -5,6 +5,13 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
+
+/**
+ * Entity respresenting ski resorts.
+ * 
+ * @author ivan
+ *
+ */
 @Entity
 public class SkiResortItem implements Serializable{
 
@@ -21,11 +28,23 @@ public class SkiResortItem implements Serializable{
 	
 	private Date lastUpdated;
 	
+	/**
+	 * Number of lift at the resort.
+	 */
 	private int liftCount;
+	
+	/**
+	 * Height of the highest mountain, meters.
+	 */
 	private int top;
+	
+	/**
+	 * Distance of the longest run, meters.
+	 */
 	private int longestRun;
 	
 	private boolean nightSkiing;
+	
 	private boolean terrainPark;
 
 	public SkiResortItem() {};

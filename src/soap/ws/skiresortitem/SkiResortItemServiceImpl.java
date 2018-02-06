@@ -27,7 +27,14 @@ import com.recombee.api_client.bindings.Rating;
 import com.recombee.api_client.exceptions.ApiException;
 
 import soap.model.SkiResortItem;
+import util.RecombeeUtil;
 
+
+/**
+ * Implementation of 
+ * @author ivan
+ *
+ */
 @WebService(endpointInterface = "soap.ws.skiresortitem.ISkiResortItemService", 
 									serviceName="SkiResortItemService")
 public class SkiResortItemServiceImpl implements ISkiResortItemService{
@@ -57,6 +64,7 @@ public class SkiResortItemServiceImpl implements ISkiResortItemService{
 	}
 	
 	static {
+		/*
 		Properties properties = new Properties();
         try {
 			properties.load(new FileInputStream("local.properties"));
@@ -70,25 +78,37 @@ public class SkiResortItemServiceImpl implements ISkiResortItemService{
         RECOMBEE_TOKEN = properties.getProperty("RECOMBEE_TOKEN");
         DB_NAME = properties.getProperty("DB_NAME");
         client = new RecombeeClient(DB_NAME, RECOMBEE_TOKEN);
+		*/
+		
+		/**
+		 * TODO:
+		 * Server doesn't know the properties file path outside the .war,
+		 * so we have a separate class containing tokens.
+		 * This repository doesn't contain this class, so you if you clone the repo,
+		 * you should either define here your database name and token, or uncomment comment
+		 * above and put it into local.properties.
+		 */
+        client = RecombeeUtil.getRecombeeClient();
+        logger.info("recombee client initialized");
         
         // setup properties for ski resort items
-//        try {
-//	      	client.send(new AddItemProperty("name", "string"));
-//	      	client.send(new AddItemProperty("lat", "string"));
-//	      	client.send(new AddItemProperty("lng", "string"));
-//	      	client.send(new AddItemProperty("officialWebsite", "string"));
-//	      	client.send(new AddItemProperty("terrainPark", "boolean"));
-//	      	client.send(new AddItemProperty("nightSkiing", "boolean"));
-//	      	client.send(new AddItemProperty("skiMapUrl", "string"));
-//	      	client.send(new AddItemProperty("region", "string"));
-//	      	client.send(new AddItemProperty("lastUpdated", "timestamp"));
-//	      	client.send(new AddItemProperty("top", "int"));
-//	      	client.send(new AddItemProperty("longestRun", "int"));
-//	        client.send(new AddItemProperty("liftCount", "int"));
-//		} catch (ApiException e) {
-//			e.printStackTrace();
-//			logger.info("properties have been already setup!");
-//		}
+        try {
+	      	client.send(new AddItemProperty("name", "string"));
+	      	client.send(new AddItemProperty("lat", "string"));
+	      	client.send(new AddItemProperty("lng", "string"));
+	      	client.send(new AddItemProperty("officialWebsite", "string"));
+	      	client.send(new AddItemProperty("terrainPark", "boolean"));
+	      	client.send(new AddItemProperty("nightSkiing", "boolean"));
+	      	client.send(new AddItemProperty("skiMapUrl", "string"));
+	      	client.send(new AddItemProperty("region", "string"));
+	      	client.send(new AddItemProperty("lastUpdated", "timestamp"));
+	      	client.send(new AddItemProperty("top", "int"));
+	      	client.send(new AddItemProperty("longestRun", "int"));
+	        client.send(new AddItemProperty("liftCount", "int"));
+		} catch (ApiException e) {
+			e.printStackTrace();
+			logger.info("properties have been already setup!");
+		}
 	}
 	
 	@Override
@@ -180,6 +200,9 @@ public class SkiResortItemServiceImpl implements ISkiResortItemService{
 		return ((b-a) * (x - min) /(max - min) ) + a;
 	}
 	
+	/**
+	 * Revert method to scale.
+	 */
 	private static double unscale(double x, double min, double max, int a, int b) {
 		return ((b-a) * (x - min) /(max - min) ) + a;
 	}
@@ -204,7 +227,11 @@ public class SkiResortItemServiceImpl implements ISkiResortItemService{
 	}
 
 
-	
+	/**
+	 * For a given user id get all items that he/she evaluated 
+	 * with the given rating.
+	 * @return List of items with given rating, null if no items found
+	 */
 	@Override
 	public List<SkiResortItem> getEvaluatedItemsWithRating(String userId, int rating) {
 		try {

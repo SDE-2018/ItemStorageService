@@ -14,11 +14,22 @@ import com.recombee.api_client.exceptions.ApiException;
 
 import soap.model.SkiResortItem;
 
-
+/**
+ * Service interface for item CRUD and rating search methods.
+ *  
+ * @author ivan
+ *
+ */
 @WebService
 @SOAPBinding(style = Style.DOCUMENT, use=Use.LITERAL) 
 public interface ISkiResortItemService {
 	
+	/**
+	 * Add item ski resort to Recombee database.
+	 * 
+	 * @return true if the operation was successful, false otherwise
+	 * @throws ApiException
+	 */
     @WebMethod(operationName="createSkiResortItem") 
     @WebResult(name="createdSkiResortItem") 
     public boolean addItem(@WebParam(name="user") SkiResortItem item) throws ApiException;
@@ -34,9 +45,9 @@ public interface ISkiResortItemService {
     @WebResult(name="skiResortItemById") 
     public SkiResortItem getItemById(@WebParam(name="itemId") String itemId);
     
-    // remove item
+    // TODO: remove item
     
-    // update item
+    // TODO: update item
 
     /**
      * Add a rating for a certain item evaluated by the user to Recombee database.
